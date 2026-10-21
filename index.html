@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Fullscreen Leaflet Map</title>
+
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@2.0.0-alpha.1/dist/leaflet.css" crossorigin=""/>
+	<script type="importmap">
+	{
+		"imports": {
+			"leaflet": "https://cdn.jsdelivr.net/npm/leaflet@2.0.0-alpha.1/dist/leaflet.js"
+		}
+	}
+	</script>
+
+	<style>
+		body {
+			margin: 0;
+		}
+		html, body, #map {
+			height: 100%;
+		}
+	</style>
+</head>
+<body>
+
+	<div id="map"></div>
+
+	<script type="module">
+		import {LeafletMap, TileLayer, Marker} from 'leaflet';
+
+		const map = new LeafletMap('map').setView([21.0246, 105.8540], 13);
+
+		new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			maxZoom: 19,
+			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+		}).addTo(map);
+/*
+		new Marker([51.5, -0.09]).addTo(map)
+			.bindPopup('Hello from a fullscreen map!')
+			.openPopup();*/
+		const locations = [
+    ["Bảo tàng Hồ Chí Minh", 21.035618175760003, 105.83262794762749],
+    ["Bảo tàng Lịch sử Quốc gia Việt Nam", 21.024276491196414, 105.85969699035012],
+    ["Bảo tàng Lịch sử Quốc gia Việt Nam", 21.025329563677694, 105.85865744326954],
+    ["H6 - Nhà truyền thống", 21.04883015, 105.78477830000001],
+    ["Bảo tàng Hà Nội", 21.010013047869904, 105.78630903304835],
+    ["Bảo tàng lực lượng Tăng Thiết Giáp", 21.046697292457782, 105.79433807782266],
+    ["Bảo tàng Dân tộc học Việt Nam", 21.040354065773506, 105.79883304262559],
+    ["Nhà tù Hỏa Lò", 21.02533985196692, 105.84647158182936],
+    ["Trung tâm Lưu trữ và Triển lãm Ảnh Nghệ thuật Việt Nam", 21.0261664770524, 105.78525762597985],
+    ["Bảo tàng Văn học Việt Nam", 21.0706157726565, 105.82449526773698],
+    ["Bảo tàng Mỹ thuật Việt Nam", 21.030663230380934, 105.8370115333893],
+    ["Trung tâm Giao lưu văn hóa phố cổ Hà Nội", 21.035519261646975, 105.85277106739028],
+    ["Bảo tàng Công an Hà Nội", 21.02429772035273, 105.84585229699705],
+    ["Bảo tàng Phụ nữ Việt Nam", 21.023394124374843, 105.85162224475928],
+    ["Bảo tàng Công an nhân dân", 21.022580384610222, 105.84556939647817],
+    ["Bảo tàng đường Hồ Chí Minh", 20.954884292957477, 105.74816456717197],
+    ["Bảo tàng Tài nguyên rừng Việt Nam", 20.929617192044464, 105.84688350743552],
+    ["Bảo tàng Công binh", 21.05619416703757, 105.80925781643671],
+    ["Bảo tàng Binh chủng Hóa học", 21.039175724230233, 105.78644581435744],
+    ["Bảo tàng Chiến thắng B52", 21.035548657988237, 105.82609228979285],
+    ["Bảo tàng Lịch sử Quân sự Việt Nam", 21.011591335055236, 105.75432720590618],
+    ["Di tích lưu niệm Tản Đà - Nguyễn Khắc Hiếu", 21.185355765700404, 105.30766341772605],
+    ["Bảo tàng Đặc công", 20.916625183824628, 105.87444865681061],
+    ["Bảo tàng Phòng không - Không quân", 20.999340235237767, 105.82919296417447],
+    ["Phòng trưng bày K9", 21.11691697812956, 105.32624741730048],
+    ["Bảo tàng Vũ Khí", 21.06756720926197, 105.88132344930202],
+    ["Di tích ngôi nhà số 5D phố Hàm Long", 21.01841617950465, 105.8545290204933],
+    ["Nhà lưu niệm Chủ tịch Hồ Chí Minh", 20.977467056463706, 105.77673053314396],
+    ["Nhà 48 phố Hàng Ngang", 21.0343278, 105.8504388],
+    ["Bảo tàng Binh chủng Thông tin liên lạc", 21.0303429, 105.8266305],
+    ["Bảo tàng Địa chất Việt Nam", 21.0235524, 105.8587723],
+    ["Bảo Tàng Hậu Cần", 21.0189071, 105.7729992],
+    ["Bảo tàng Thiên nhiên Việt Nam", 21.0480728, 105.8005373],
+    ["Bảo tàng trưng bày cổ vật thành Cổ Loa", 21.1115692, 105.8733477],
+    ["Bảo tàng Pháo binh", 21.0385013, 105.8081236],
+    ["Khu trưng bày máy bay", 21.1403976, 105.5049193],
+    ["Bảo tàng Tố Hữu", 21.0398614, 105.7938659]
+];
+
+locations.forEach(([name, lat, lon]) => {
+    const marker = new Marker([lat, lon])
+        .addTo(map)
+        .bindPopup(name)
+    marker.on("click", () => {
+            map.flyTo([lat, lon], 16, {
+                animate: true,
+                duration: 1
+            });
+            marker.openPopup();
+        });
+
+});
+
+
+const geoJsonLayer = new geoJSON(null, {
+    style: {
+        color: "#088",
+        opacity: 0.8,
+        fillColor: "#088",
+        fillOpacity: 0.3,
+        weight: 2
+    },
+    onEachFeature: function (feature, layer) {
+        const name = feature.properties?.name;
+        if (name) {
+            layer.bindPopup(name);
+        }
+    }
+}).addTo(map);
+
+// Load GeoJSON using fetch()
+fetch("./poly.geojson")
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Remove previously loaded features
+        geoJsonLayer.clearLayers();
+
+        // Add Polygon, MultiPolygon, or FeatureCollection
+        geoJsonLayer.addData(data);
+
+        // Zoom to all loaded geometries
+        const bounds = geoJsonLayer.getBounds();
+        if (bounds.isValid()) {
+            map.fitBounds(bounds, { padding: [20, 20] });
+        }
+    })
+    .catch(error => {
+        console.error("Error loading GeoJSON:", error);
+    });
+
+	</script>
+
+</body>
+</html>
